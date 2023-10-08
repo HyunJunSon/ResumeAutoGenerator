@@ -14,22 +14,22 @@ import java.io.IOException;
 import java.util.List;
 
 public class Resume extends XSSFWorkbook{
-    Sheet sheet;
-    private List<PersonInfo> personInfoList;
+    Sheet sheet_resume;
+    Sheet sheet_selfIntroduction;
+    private PersonInfo personInfo;
     private List<Education> educationList;
     private List<Career> careerList;
-    private List<StringBuilder> selfIntroductionList;
+    private StringBuilder selfIntroduction;
 
-    Resume(List<PersonInfo> personInfoList,List<Education> educationList, List<Career> careerList ){
-        this.sheet = createSheet("이력서");
-        this.personInfoList = personInfoList;
+    Resume(PersonInfo personInfo,List<Education> educationList, List<Career> careerList,StringBuilder selfIntroduction){
+        this.sheet_resume = createSheet("이력서");
+        this.personInfo = personInfo;
         this.educationList = educationList;
         this.careerList = careerList;
+        this.sheet_selfIntroduction = createSheet("자기소개서");
+        this.selfIntroduction = selfIntroduction;
     }
-    public void addSheet(String sheetName){
-        this.sheet = this.createSheet(sheetName);
-        this.selfIntroductionList = selfIntroductionList;
-    }
+
 
     public void createExcelFile(String fileName) throws IOException {
         String filename = fileName + ".xlsx";
@@ -46,35 +46,32 @@ public class Resume extends XSSFWorkbook{
     }
     //헤더생성
     private void createHeader(String[] headerElement, int row){
-        Row headerRow = sheet.createRow(row);
+        Row headerRow = sheet_resume.createRow(row);
         String[] header = headerElement ;
         for(int i=0; i<header.length; i++){
             headerRow.createCell(i).setCellValue(header[i]);
         }
     }
-
     public Resume addPersonInfoToCell(){
-        this.createHeader(new String[]{"사진", "이름", "이메일", "주소", "전화번호", "생년월일"}, 0);
-        for (int i = 0; i < personInfoList.size(); i++) {
-            PersonInfo person = personInfoList.get(i);
+        this.createHeader(new String[]{"사진", "이름", "이메일", "주소", "전화번호", "생년월일"}, 1);
 
-            Row row = sheet.createRow(i + 1);
-            row.createCell(0).setCellValue(person.getPhoto());
-            row.createCell(1).setCellValue(person.getName());
-            row.createCell(2).setCellValue(person.getEmail());
-            row.createCell(3).setCellValue(person.getAddress());
-            row.createCell(4).setCellValue(person.getPhoneNumber());
-            row.createCell(5).setCellValue(person.getBirthDate());
-        }
+        Row row = sheet_resume.createRow( 2);
+        row.createCell(0).setCellValue(personInfo.getPhoto());
+        row.createCell(1).setCellValue(personInfo.getName());
+        row.createCell(2).setCellValue(personInfo.getEmail());
+        row.createCell(3).setCellValue(personInfo.getAddress());
+        row.createCell(4).setCellValue(personInfo.getPhoneNumber());
+        row.createCell(5).setCellValue(personInfo.getBirthDate());
+
         return this;
     }
 
     public Resume addEducationInfoToCell(){
-        createHeader(new String[]{"졸업연도","학교명","전공","졸업여부"}, personInfoList.size()+1);
+        createHeader(new String[]{"졸업연도","학교명","전공","졸업여부"}, 3);
         for (int i = 0; i < educationList.size(); i++) {
             Education education = educationList.get(i);
 
-            Row row = sheet.createRow(personInfoList.size()+2+i);
+            Row row = sheet_resume.createRow(4+i);
             row.createCell(0).setCellValue(education.getGraduationYear());
             row.createCell(1).setCellValue(education.getSchoolName());
             row.createCell(2).setCellValue(education.getMajor());
@@ -84,12 +81,12 @@ public class Resume extends XSSFWorkbook{
     }
 
     public Resume addCareerInfoToCell(){
-        createHeader(new String[]{"근무기간","근무처","담당업무","근속년수"}, personInfoList.size()+educationList.size()+1);
+        createHeader(new String[]{"근무기간","근무처","담당업무","근속년수"}, educationList.size()+4);
 
         for (int i = 0; i < careerList.size(); i++) {
             Career career = careerList.get(i);
 
-            Row row = sheet.createRow(personInfoList.size()+educationList.size()+2+i);
+            Row row = sheet_resume.createRow(educationList.size()+5+i);
             row.createCell(0).setCellValue(career.getWorkPeriod());
             row.createCell(1).setCellValue(career.getCompanyName());
             row.createCell(2).setCellValue(career.getJobTitle());
@@ -98,8 +95,10 @@ public class Resume extends XSSFWorkbook{
         return this;
     }
 
-//    public Resume Add_SelfIntroductionSheet() {
-//
-//    }
+    public Resume Add_SelfIntroductionSheet() {
+        Row row = sheet_selfIntroduction.createRow( 1);
+        row.createCell(0).setCellValue(selfIntroduction.toString());
+        return this;
+    }
 }
 

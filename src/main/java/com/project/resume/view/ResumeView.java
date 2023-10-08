@@ -10,12 +10,12 @@ import java.util.Scanner;
 
 public class ResumeView {
     private Scanner sc = new Scanner(System.in);
-    private List<PersonInfo> personInfoList;
+    private PersonInfo personInfo;
     private List<Education> educationList;
     private List<Career> careerList;
-    private List<StringBuilder> selfIntroductionList;
-    public List<PersonInfo> getPersonInfoList() {
-        return personInfoList;
+    private StringBuilder selfIntroduction;
+    public PersonInfo getPersonInfo() {
+        return personInfo;
     }
 
     public List<Education> getEducationList() {
@@ -26,32 +26,30 @@ public class ResumeView {
         return careerList;
     }
 
-    public List<StringBuilder> getSelfIntroductionList() {
-        return selfIntroductionList;
+    public StringBuilder getSelfIntroduction() {
+        return selfIntroduction;
     }
 
     public ResumeView() {
-        this.personInfoList = new ArrayList<>();
         this.educationList = new ArrayList<>();
         this.careerList = new ArrayList<>();
-        this.selfIntroductionList = new ArrayList<>();
     }
 
     private String getStringData(String data){
-        System.out.print( data+"을/를 입력하세요:");
+        System.out.print( data+"(을/를) 입력하세요:");
         if (data.equals("학력 정보"))
-            System.out.print("(종료는 q):\n졸업년도 학교명 전공 졸업여부");
+            System.out.print("(종료는 q)\n졸업년도 학교명 전공 졸업여부 : ");
         if (data.equals("경력 정보"))
-            System.out.print("(종료는 q):\n근무기간 근무처 담당업무 근속년수");
+            System.out.print("(종료는 q)\n근무기간 근무처 담당업무 근속년수 : ");
         return sc.nextLine();
     }
     private int getIntData(String data){
-        System.out.print( data+"을/를 입력하세요:");
+        System.out.print( data+"(을/를) 입력하세요:");
         int res = sc.nextInt();
         sc.nextLine(); // 개행문자 제거
         return res;
     }
-    public void inputPersonInfo() {
+    public ResumeView inputPersonInfo() {
         String photo = getStringData("사진파일명");
         String name = getStringData("이름");
         String email = getStringData("이메일");
@@ -59,27 +57,30 @@ public class ResumeView {
         String phoneNumber = getStringData("전화번호");
         String birthDate = getStringData("생년월일");
 
-        personInfoList.add(new PersonInfo(photo, name, email, address, phoneNumber, birthDate));
+        this.personInfo = new PersonInfo(photo, name, email, address, phoneNumber, birthDate);
 
+        return this;
     }
-    public void inputEducationList() {
+    public ResumeView inputEducationList() {
         while(true){
             String inputData = getStringData("학력 정보");
             if (inputData.equals("q"))
                 break;
             educationList.add(new Education(inputData));
         }
+        return  this;
     }
-    public void inputCareerList(){
+    public ResumeView inputCareerList(){
         while(true){
             String inputData = getStringData("경력 정보");
             if (inputData.equals("q"))
                 break;
             careerList.add(new Career(inputData));
         }
+        return this;
 
     }
-    public void inputSelfIntroduction() {
+    public ResumeView inputSelfIntroduction() {
         System.out.println("자기소개서를 입력하세요. 여러 줄을 입력하려면 빈 줄을 입력하세요.");
 
         String line;
@@ -92,7 +93,8 @@ public class ResumeView {
             }
             selfIntroduction.append(line).append("\n");
         }
-        selfIntroductionList.add(selfIntroduction);
+        this.selfIntroduction = selfIntroduction;
+        return this;
     }
 
 }
