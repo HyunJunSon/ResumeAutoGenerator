@@ -1,6 +1,8 @@
 # ResumeAutoGenerator
 이력서를 자동으로 생성하는 프로그램
 
+# src는 master branch에 있습니다.
+
 ## 목차
 
 1. 프로그램 개요
