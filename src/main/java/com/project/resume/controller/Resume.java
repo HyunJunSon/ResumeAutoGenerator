@@ -66,12 +66,37 @@ public class Resume extends XSSFWorkbook{
             cell.setCellStyle(style);  // 스타일 적용
             sheet_resume.autoSizeColumn(i);
         }
-        font.setBold(false);
+//        font.setBold(false);
     }
 
     private void insertPhoto(Row row, String fileName) {
-        System.out.println("사진이 입력되었습니다.");
+        try {
+            InputStream imageStream = new FileInputStream(fileName);
+            byte[] bytes = IOUtils.toByteArray(imageStream);
+            int pictureIndex = sheet_resume.getWorkbook().addPicture(bytes, Workbook.PICTURE_TYPE_PNG);
+
+            CreationHelper creationHelper = sheet_resume.getWorkbook().getCreationHelper();
+
+            // 그림을 추가할 셀을 선택합니다. 여기서는 A2셀을 선택합니다.
+            XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) 0, 1, (short) 1, 2);
+
+            // 그림을 그림 객체에 추가합니다.
+            XSSFDrawing drawing = (XSSFDrawing) sheet_resume.createDrawingPatriarch();
+            XSSFPicture picture = drawing.createPicture(anchor, pictureIndex);
+
+            // 셀 크기를 조절합니다.
+            sheet_resume.setColumnWidth(0, (int) (40 * 256)); // 셀 가로 크기 조절
+            row.setHeight((short) (40 * 30)); // 셀 세로 크기 조절 (40 픽셀을 1/20으로 변환)
+
+            // 그림 크기를 셀 크기에 맞게 조절합니다.
+            picture.resize(1.0, 1.0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
 
 
