@@ -17,7 +17,8 @@ public class Main {
                                    );
 
         resume.addPersonInfoToCell().addEducationInfoToCell().addCareerInfoToCell()
-                                    .createExcelFile("resume01");
+                .add_SelfIntroductionSheet()
+                .createExcelFile("resume01");
 
 
     }
