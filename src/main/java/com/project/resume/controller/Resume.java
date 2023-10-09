@@ -86,7 +86,7 @@ public class Resume extends XSSFWorkbook{
 
             // 셀 크기를 조절합니다.
             sheet_resume.setColumnWidth(0, (int) (40 * 256)); // 셀 가로 크기 조절
-            row.setHeight((short) (40 * 30)); // 셀 세로 크기 조절 (40 픽셀을 1/20으로 변환)
+            row.setHeight((short) (40 * 40)); // 셀 세로 크기 조절 (40 픽셀을 1/20으로 변환)
 
             // 그림 크기를 셀 크기에 맞게 조절합니다.
             picture.resize(1.0, 1.0);
